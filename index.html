@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayQu — PPOB Professional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#f4f6fb;--fg:#0f172a;--muted:#64748b;--accent:#059669;--accent-light:#d1fae5;--accent-dark:#065f46;--card:#ffffff;--border:#e2e8f0;--sidebar:#0c1a2e;--sidebar-hover:#162340;--sidebar-active:rgba(5,150,105,0.15);--warning:#f59e0b;--danger:#ef4444;--info:#0ea5e9}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--fg);overflow-x:hidden}
+        h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+        .sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--sidebar);z-index:100;transition:transform .3s;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.05)}
+        .sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px}
+        .sidebar-logo .li{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#059669,#10b981);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:800}
+        .sidebar-logo .lt{font-family:'Space Grotesk';font-size:22px;font-weight:700;color:#fff;letter-spacing:-.5px}
+        .sidebar-logo .ls{font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-top:-2px}
+        .sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto}
+        .nsl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.3);padding:12px 12px 8px;font-weight:600}
+        .ni{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,.55);font-size:13.5px;font-weight:500;transition:all .2s;margin-bottom:2px;position:relative}
+        .ni:hover{color:rgba(255,255,255,.85);background:var(--sidebar-hover)}
+        .ni.active{color:#10b981;background:var(--sidebar-active)}
+        .ni.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#10b981;border-radius:0 3px 3px 0}
+        .ni i{width:20px;text-align:center;font-size:15px}
+        .nb{margin-left:auto;background:var(--danger);color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700}
+        .sidebar-footer{padding:16px;border-top:1px solid rgba(255,255,255,.06)}
+        .su{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;cursor:pointer;transition:background .2s}
+        .su:hover{background:var(--sidebar-hover)}
+        .su-a{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}
+        .su-n{color:#fff;font-size:13px;font-weight:600}.su-r{color:rgba(255,255,255,.4);font-size:11px}
+        .mc{margin-left:260px;min-height:100vh;transition:margin-left .3s}
+        .th{position:sticky;top:0;z-index:50;background:rgba(244,246,251,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;gap:16px}
+        .hb{display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--fg);padding:6px}
+        .ha{display:flex;align-items:center;gap:8px;margin-left:auto}
+        .hbtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .2s;color:var(--muted);font-size:16px}
+        .hbtn:hover{border-color:var(--accent);color:var(--accent)}
+        .hbtn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:var(--danger);border-radius:50%;border:2px solid var(--card)}
+        .pc{padding:28px}
+        .card{background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;transition:all .25s}
+        .card:hover{box-shadow:0 4px 24px rgba(0,0,0,.06)}
+        .ch{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+        .ch h3{font-size:15px;font-weight:700}
+        .cb{padding:22px}
+        .sc{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:22px;position:relative;overflow:hidden;transition:all .25s}
+        .sc:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.08)}
+        .sc .sci{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:16px}
+        .sc .scv{font-family:'Space Grotesk';font-size:26px;font-weight:800;line-height:1.1}
+        .sc .scl{font-size:13px;color:var(--muted);margin-top:4px}
+        .sc .scb{position:absolute;right:-20px;bottom:-20px;width:100px;height:100px;border-radius:50%;opacity:.06}
+        .svi{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px;border-radius:14px;cursor:pointer;transition:all .2s;border:1px solid transparent}
+        .svi:hover{background:var(--accent-light);border-color:rgba(5,150,105,.15);transform:translateY(-2px)}
+        .svi .svi-i{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .2s}
+        .svi:hover .svi-i{transform:scale(1.08)}
+        .svi .svi-n{font-size:12px;font-weight:600;text-align:center;color:var(--fg);line-height:1.3}
+        .dt{width:100%;border-collapse:collapse}
+        .dt thead th{padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border);background:#f8fafc}
+        .dt tbody td{padding:14px 16px;font-size:13.5px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+        .dt tbody tr{transition:background .15s}.dt tbody tr:hover{background:#f8fafc}
+        .bdg{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:11.5px;font-weight:600}
+        .bdg-s{background:#d1fae5;color:#065f46}.bdg-w{background:#fef3c7;color:#92400e}.bdg-d{background:#fee2e2;color:#991b1b}.bdg-i{background:#e0f2fe;color:#075985}
+        .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:13.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .2s}
+        .btn-p{background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 2px 12px rgba(5,150,105,.25)}
+        .btn-p:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(5,150,105,.35)}
+        .btn-p:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+        .btn-s{background:var(--card);color:var(--fg);border:1px solid var(--border)}
+        .btn-s:hover{border-color:var(--accent);color:var(--accent)}
+        .btn-d{background:#ef4444;color:#fff}.btn-d:hover{background:#dc2626}
+        .btn-w{background:#f59e0b;color:#fff}.btn-w:hover{background:#d97706}
+        .btn-sm{padding:7px 14px;font-size:12px;border-radius:8px}
+        .fg{margin-bottom:18px}
+        .fl{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--fg)}
+        .fi,.fs{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:13.5px;font-family:inherit;background:var(--card);color:var(--fg);transition:all .2s}
+        .fi:focus,.fs:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(5,150,105,.1)}
+        .fi::placeholder{color:#94a3b8}
+        .mo{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+        .mo.show{opacity:1;pointer-events:auto}
+        .ml{background:var(--card);border-radius:20px;width:90%;max-width:520px;max-height:90vh;overflow-y:auto;transform:scale(.95) translateY(10px);transition:transform .25s;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+        .mo.show .ml{transform:scale(1) translateY(0)}
+        .ml-h{padding:22px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+        .ml-h h3{font-size:17px;font-weight:700}
+        .ml-c{width:32px;height:32px;border-radius:8px;border:none;background:#f1f5f9;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .2s}
+        .ml-c:hover{background:#fee2e2;color:var(--danger)}
+        .ml-b{padding:24px}.ml-f{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+        .tc{position:fixed;top:20px;right:20px;z-index:300;display:flex;flex-direction:column;gap:10px}
+        .toast{padding:14px 20px;border-radius:12px;background:var(--card);border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.12);display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:500;min-width:300px;animation:tIn .3s}
+        .toast.out{animation:tOut .3s forwards}
+        .toast-i{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+        @keyframes tIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes tOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}
+        .ps{display:none}.ps.active{display:block;animation:fi .3s}
+        @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .po{padding:14px 16px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between}
+        .po:hover{border-color:var(--accent);background:#f0fdf4}
+        .po.sel{border-color:var(--accent);background:#ecfdf5}
+        .po .po-n{font-size:13.5px;font-weight:600}.po .po-d{font-size:11.5px;color:var(--muted);margin-top:2px}
+        .po .po-p{font-weight:700;color:var(--accent);font-size:14px}
+        .salc{background:linear-gradient(135deg,#0c1a2e 0%,#162340 50%,#0c1a2e 100%);border-radius:18px;padding:28px;color:#fff;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+        .salc::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(5,150,105,.3),transparent 70%)}
+        .pd{width:8px;height:8px;border-radius:50%;background:#10b981;position:relative;display:inline-block;vertical-align:middle}
+        .pd::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid #10b981;animation:pu 2s ease-in-out infinite}
+        @keyframes pu{0%,100%{opacity:0;transform:scale(.8)}50%{opacity:.5;transform:scale(1.2)}}
+        .sov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99;opacity:0;pointer-events:none;transition:opacity .3s}
+        .sov.show{opacity:1;pointer-events:auto}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @media(max-width:1024px){.sidebar{transform:translateX(-260px)}.sidebar.open{transform:translateX(0)}.mc{margin-left:0!important}.hb{display:flex}.rg2{grid-template-columns:1fr!important}}
+        @media(max-width:640px){.pc{padding:16px}.th{padding:12px 16px}.rg3{grid-template-columns:1fr!important}}
+
+        /* === Security Page Styles === */
+        .sec-score-ring{width:140px;height:140px;position:relative}
+        .sec-score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+        .sec-score-ring circle{fill:none;stroke-width:10;stroke-linecap:round}
+        .sec-score-ring .ring-bg{stroke:#e2e8f0}
+        .sec-score-ring .ring-fg{transition:stroke-dashoffset 1.5s ease,stroke 1s ease}
+        .sec-score-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .sec-score-val .sv-num{font-family:'Space Grotesk';font-size:36px;font-weight:800;line-height:1}
+        .sec-score-val .sv-label{font-size:11px;color:var(--muted);margin-top:2px}
+
+        .sec-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;transition:all .2s}
+        .sec-item:hover{border-color:var(--accent);background:#f0fdf4}
+        .sec-item .si-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+        .sec-item .si-info{flex:1}
+        .sec-item .si-title{font-size:14px;font-weight:600}
+        .sec-item .si-desc{font-size:12px;color:var(--muted);margin-top:2px}
+        .sec-item .si-status{padding:5px 12px;border-radius:8px;font-size:11.5px;font-weight:700;white-space:nowrap}
+        .si-ok{background:#d1fae5;color:#065f46}
+        .si-warn{background:#fef3c7;color:#92400e}
+        .si-bad{background:#fee2e2;color:#991b1b}
+
+        .totp-inputs{display:flex;gap:8px;justify-content:center;margin:24px 0}
+        .totp-inputs input{width:52px;height:60px;text-align:center;font-family:'Space Grotesk';font-size:24px;font-weight:800;border:2px solid var(--border);border-radius:12px;background:#f8fafc;transition:all .2s}
+        .totp-inputs input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(5,150,105,.1)}
+
+        .session-device{display:flex;align-items:center;gap:14px;padding:16px 18px;background:#f8fafc;border-radius:12px;margin-bottom:10px;border:1px solid transparent;transition:all .2s}
+        .session-device:hover{border-color:var(--border)}
+        .session-device.current{border-color:var(--accent);background:#f0fdf4}
+        .session-device .sd-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--card);border:1px solid var(--border)}
+
+        .ip-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;font-size:12.5px;font-family:'Courier New',monospace;margin:0 6px 6px 0}
+        .ip-tag .ip-remove{cursor:pointer;color:var(--muted);transition:color .2s;font-size:11px}
+        .ip-tag .ip-remove:hover{color:var(--danger)}
+
+        .act-log{max-height:400px;overflow-y:auto}
+        .act-log-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #f1f5f9;font-size:13px}
+        .act-log-item:last-child{border-bottom:none}
+        .act-log-item .al-time{color:var(--muted);font-size:12px;white-space:nowrap;min-width:120px}
+        .act-log-item .al-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+        .act-log-item .al-text{flex:1;line-height:1.4}
+    </style>
+</head>
+<body>
+
+<div class="sov" id="sov" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><div class="li">PQ</div><div><div class="lt">PayQu</div><div class="ls">PPOB Platform</div></div></div>
+    <nav class="sidebar-nav">
+        <div class="nsl">Menu Utama</div>
+        <div class="ni active" data-page="dashboard" onclick="nav('dashboard')"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="ni" data-page="layanan" onclick="nav('layanan')"><i class="fas fa-grip"></i> Layanan</div>
+        <div class="ni" data-page="transaksi" onclick="nav('transaksi')"><i class="fas fa-arrow-right-arrow-left"></i> Transaksi</div>
+        <div class="ni" data-page="riwayat" onclick="nav('riwayat')"><i class="fas fa-clock-rotate-left"></i> Riwayat</div>
+        <div class="nsl">Keuangan</div>
+        <div class="ni" data-page="saldo" onclick="nav('saldo')"><i class="fas fa-wallet"></i> Saldo & Deposit</div>
+        <div class="nsl">Pengaturan</div>
+        <div class="ni" data-page="profil" onclick="nav('profil')"><i class="fas fa-user-gear"></i> Profil</div>
+        <div class="ni" data-page="security" onclick="nav('security')"><i class="fas fa-shield-halved"></i> Keamanan</div>
+        <div class="ni" data-page="api" onclick="nav('api')"><i class="fas fa-plug"></i> Koneksi API</div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="su" onclick="nav('profil')">
+            <div class="su-a">AR</div>
+            <div style="flex:1"><div class="su-n">Ahmad Rizki</div><div class="su-r">Premium Agent</div></div>
+            <i class="fas fa-ellipsis-vertical" style="color:rgba(255,255,255,.3);font-size:14px"></i>
+        </div>
+    </div>
+</aside>
+
+<div class="mc" id="mc">
+    <header class="th">
+        <button class="hb" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        <div style="flex:1;font-size:15px;font-weight:600;color:var(--muted)" id="breadcrumb">Dashboard</div>
+        <div class="ha">
+            <div class="hbtn" onclick="nav('security')" title="Keamanan"><i class="fas fa-shield-halved"></i></div>
+            <div class="hbtn" onclick="nav('saldo')"><i class="fas fa-wallet"></i></div>
+        </div>
+    </header>
+
+    <div class="pc">
+
+        <!-- DASHBOARD -->
+        <section class="ps active" id="p-dashboard">
+            <div style="margin-bottom:28px"><h2 style="font-size:24px;font-weight:800">Selamat Datang, Ahmad</h2><p style="color:var(--muted);font-size:14px;margin-top:4px"><span class="pd" style="margin-right:6px"></span>System online</p></div>
+            <div class="salc" style="margin-bottom:24px"><div style="position:relative;z-index:1"><div style="font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Saldo Anda</div><div style="font-family:'Space Grotesk';font-size:34px;font-weight:800;letter-spacing:-1px">Rp 2.456.000</div></div></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px">
+                <div class="sc"><div class="sci" style="background:#d1fae5;color:#059669"><i class="fas fa-receipt"></i></div><div class="scv">1,247</div><div class="scl">Transaksi Bulan Ini</div><div class="scb" style="background:#059669"></div></div>
+                <div class="sc"><div class="sci" style="background:#fef3c7;color:#d97706"><i class="fas fa-coins"></i></div><div class="scv">Rp 18.2jt</div><div class="scl">Omzet Bulan Ini</div><div class="scb" style="background:#f59e0b"></div></div>
+                <div class="sc"><div class="sci" style="background:#e0f2fe;color:#0284c7"><i class="fas fa-hand-holding-dollar"></i></div><div class="scv">Rp 892rb</div><div class="scl">Margin Bulan Ini</div><div class="scb" style="background:#0ea5e9"></div></div>
+                <div class="sc"><div class="sci" style="background:#fee2e2;color:#ef4444"><i class="fas fa-shield-halved"></i></div><div class="scv" id="secScoreMini">72</div><div class="scl">Skor Keamanan</div><div class="scb" style="background:#ef4444"></div></div>
+            </div>
+            <div class="card"><div class="ch"><h3>Transaksi Terbaru</h3><button class="btn btn-s btn-sm" onclick="nav('riwayat')">Lihat Semua</button></div><div class="cb" style="padding:0"><table class="dt"><thead><tr><th>Layanan</th><th>Nomor</th><th>Nominal</th><th>Status</th></tr></thead><tbody id="rtb"></tbody></table></div></div>
+        </section>
+
+        <!-- LAYANAN -->
+        <section class="ps" id="p-layanan">
+            <div style="margin-bottom:24px"><h2 style="font-size:24px;font-weight:800">Semua Layanan</h2></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px" id="asg"></div>
+        </section>
+
+        <!-- TRANSAKSI -->
+        <section class="ps" id="p-transaksi">
+            <div style="margin-bottom:24px"><h2 style="font-size:24px;font-weight:800">Buat Transaksi</h2></div>
+            <div class="rg2" style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+                <div class="card"><div class="ch"><h3>Detail Transaksi</h3></div><div class="cb">
+                    <div class="fg"><label class="fl">Jenis Layanan</label><select class="fs" id="ts" onchange="onSC()"><option value="">-- Pilih --</option><option value="pulsa">Pulsa</option><option value="token-pln">Token PLN</option><option value="game">Voucher Game</option><option value="emoney">E-Money</option></select></div>
+                    <div class="fg"><label class="fl" id="lp">Provider</label><select class="fs" id="tp" onchange="onPC()"><option value="">-- Pilih --</option></select></div>
+                    <div class="fg"><label class="fl">Nomor Tujuan</label><input class="fi" type="text" id="tn" placeholder="081234567890" oninput="onNI(this.value)"><div id="nif" style="font-size:12px;color:var(--muted);margin-top:6px"></div></div>
+                    <div class="fg" id="tpg" style="display:none"><label class="fl">Pilih Produk</label><div id="tpl" style="display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto"></div></div>
+                    <button class="btn btn-p" style="width:100%;justify-content:center;margin-top:8px" onclick="procTxn()" id="tsub" disabled><i class="fas fa-paper-plane"></i> Proses Transaksi</button>
+                </div></div>
+                <div><div class="card"><div class="ch"><h3>Ringkasan</h3></div><div class="cb"><div id="txs" style="color:var(--muted);font-size:14px;text-align:center;padding:30px 0"><i class="fas fa-file-invoice" style="font-size:36px;opacity:.2;display:block;margin-bottom:12px"></i>Belum ada data</div><div id="txsc" style="display:none"><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9"><span style="color:var(--muted);font-size:13px">Layanan</span><span style="font-weight:600;font-size:13px" id="smS">-</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9"><span style="color:var(--muted);font-size:13px">Tujuan</span><span style="font-weight:600;font-size:13px" id="smN">-</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9"><span style="color:var(--muted);font-size:13px">Produk</span><span style="font-weight:600;font-size:13px" id="smP">-</span></div><div style="display:flex;justify-content:space-between;padding:14px 0;margin-top:4px"><span style="font-weight:700;font-size:15px">Total</span><span style="font-weight:800;font-size:18px;color:var(--accent)" id="smT">Rp 0</span></div></div></div></div></div>
+            </div>
+        </section>
+
+        <!-- RIWAYAT -->
+        <section class="ps" id="p-riwayat">
+            <div style="margin-bottom:24px"><h2 style="font-size:24px;font-weight:800">Riwayat Transaksi</h2></div>
+            <div class="card"><div class="cb" style="padding:0;overflow-x:auto"><table class="dt"><thead><tr><th>ID</th><th>Tanggal</th><th>Layanan</th><th>Tujuan</th><th>Harga</th><th>Status</th></tr></thead><tbody id="hb"></tbody></table></div></div>
+        </section>
+
+        <!-- SALDO -->
+        <section class="ps" id="p-saldo">
+            <div style="margin-bottom:24px"><h2 style="font-size:24px;font-weight:800">Saldo & Deposit</h2></div>
+            <div class="salc" style="margin-bottom:24px"><div style="position:relative;z-index:1"><div style="font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Saldo Tersedia</div><div style="font-family:'Space Grotesk';font-size:38px;font-weight:800">Rp 2.456.000</div></div></div>
+            <div class="card"><div class="ch"><h3>Top Up</h3></div><div class="cb"><div style="display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end"><div class="fg" style="margin-bottom:0"><label class="fl">Metode</label><select class="fs" id="dm"><option>BCA VA</option><option>BRI VA</option><option>QRIS</option></select></div><div class="fg" style="margin-bottom:0"><label class="fl">Nominal</label><select class="fs" id="da"><option value="100000">100.000</option><option value="500000" selected>500.000</option><option value="1000000">1.000.000</option></select></div><button class="btn btn-p" style="height:44px" onclick="procDep()"><i class="fas fa-plus"></i> Deposit</button></div></div></div>
+        </section>
+
+        <!-- PROFIL -->
+        <section class="ps" id="p-profil">
+            <div style="margin-bottom:24px"><h2 style="font-size:24px;font-weight:800">Profil Saya</h2></div>
+            <div class="rg2" style="display:grid;grid-template-columns:1fr 2fr;gap:24px">
+                <div class="card" style="text-align:center"><div class="cb" style="padding:36px 24px"><div style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;margin:0 auto 16px">AD</div><h3 style="font-size:18px;font-weight:700">Adit</h3><p style="color:var(--muted);font-size:13px;margin-top:4px">Premium Agent</p></div></div>
+                <div class="card"><div class="ch"><h3>Informasi Akun</h3></div><div class="cb"><div style="display:grid;grid-template-columns:1fr 1fr;gap:18px"><div class="fg"><label class="fl">Nama</label><input class="fi" value="Adit"></div><div class="fg"><label class="fl">Perusahaan</label><input class="fi" value="Toko Jaya Cell"></div><div class="fg"><label class="fl">Email</label><input class="fi" value="aditgout@email.com"></div><div class="fg"><label class="fl">No. HP</label><input class="fi" value="085220769054"></div></div><button class="btn btn-p" onclick="toast('success','Profil disimpan')"><i class="fas fa-save"></i> Simpan</button></div></div>
+            </div>
+        </section>
+
+        <!-- ========== KEAMANAN ========== -->
+        <section class="ps" id="p-security">
+            <div style="margin-bottom:28px"><h2 style="font-size:24px;font-weight:800">Keamanan Akun</h2><p style="color:var(--muted);font-size:14px;margin-top:4px">Kelola keamanan, 2FA, sesi, dan aktivitas akun Anda</p></div>
+
+            <!-- Security Score -->
+            <div class="card" style="margin-bottom:24px">
+                <div class="cb" style="display:flex;align-items:center;gap:40px;flex-wrap:wrap">
+                    <div class="sec-score-ring">
+                        <svg viewBox="0 0 120 120">
+                            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                            <circle class="ring-fg" id="scoreRing" cx="60" cy="60" r="50"
+                                stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+                        </svg>
+                        <div class="sec-score-val">
+                            <span class="sv-num" id="scoreNum" style="color:var(--danger)">0</span>
+                            <span class="sv-label">dari 100</span>
+                        </div>
+                    </div>
+                    <div style="flex:1;min-width:240px">
+                        <h3 style="font-size:16px;font-weight:700;margin-bottom:4px" id="scoreLabel">Skor Keamanan</h3>
+                        <p style="font-size:13px;color:var(--muted);margin-bottom:18px" id="scoreDesc">Menghitung...</p>
+                        <div id="scoreChecks"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rg2" style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+
+                <!-- Kolom Kiri -->
+                <div>
+                    <!-- Ubah Password -->
+                    <div class="card" style="margin-bottom:20px">
+                        <div class="ch"><h3><i class="fas fa-key" style="color:var(--warning);margin-right:8px"></i>Ubah Password</h3></div>
+                        <div class="cb">
+                            <div class="fg"><label class="fl">Password Lama</label><input class="fi" type="password" id="pwOld" placeholder="Masukkan password lama"></div>
+                            <div class="fg"><label class="fl">Password Baru</label><input class="fi" type="password" id="pwNew" placeholder="Minimal 8 karakter" oninput="checkPwStrength()"><div id="pwStrength" style="margin-top:8px"></div></div>
+                            <div class="fg"><label class="fl">Konfirmasi Password Baru</label><input class="fi" type="password" id="pwConf" placeholder="Ulangi password baru"></div>
+                            <button class="btn btn-p" style="width:100%;justify-content:center" onclick="changePassword()"><i class="fas fa-lock"></i> Ubah Password</button>
+                        </div>
+                    </div>
+
+                    <!-- 2FA -->
+                    <div class="card" style="margin-bottom:20px">
+                        <div class="ch">
+                            <h3><i class="fas fa-mobile-screen" style="color:var(--accent);margin-right:8px"></i>Autentikasi 2 Faktor</h3>
+                            <span class="bdg" id="tfaStatus" style="font-size:11px">-</span>
+                        </div>
+                        <div class="cb" id="tfaContent"></div>
+                    </div>
+
+                    <!-- Rotasi API Key -->
+                    <div class="card">
+                        <div class="ch"><h3><i class="fas fa-rotate" style="color:var(--info);margin-right:8px"></i>Rotasi API Key</h3></div>
+                        <div class="cb">
+                            <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Rotasi API Key secara berkala untuk menjaga keamanan. Key lama akan tidak valid 24 jam setelah rotasi.</p>
+                            <div class="fg"><label class="fl">API Key Saat Ini</label><div style="display:flex;gap:8px"><input class="fi" type="text" id="currentApiKey" value="sk_live_xxxxxxxxxxxxxxxx" readonly style="font-family:'Courier New',monospace;font-size:13px;background:#f8fafc"><button class="btn btn-s btn-sm" onclick="copyText('currentApiKey')"><i class="fas fa-copy"></i></button></div></div>
+                            <div class="fg" id="newApiKeyGroup" style="display:none"><label class="fl">API Key Baru</label><div style="display:flex;gap:8px"><input class="fi" type="text" id="newApiKey" readonly style="font-family:'Courier New',monospace;font-size:13px;background:#ecfdf5;border-color:var(--accent)"><button class="btn btn-p btn-sm" onclick="copyText('newApiKey')"><i class="fas fa-copy"></i></button></div><div style="font-size:11.5px;color:var(--warning);margin-top:6px"><i class="fas fa-triangle-exclamation" style="margin-right:4px"></i>Simpan key ini sekarang — tidak bisa ditampilkan lagi</div></div>
+                            <button class="btn btn-w" style="width:100%;justify-content:center" onclick="rotateApiKey()" id="btnRotate"><i class="fas fa-rotate"></i> Rotasi API Key</button>
+                            <button class="btn btn-p" style="width:100%;justify-content:center;display:none" onclick="confirmRotateApiKey()" id="btnConfirmRotate"><i class="fas fa-check"></i> Konfirmasi Rotasi</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan -->
+                <div>
+                    <!-- Sesi Aktif -->
+                    <div class="card" style="margin-bottom:20px">
+                        <div class="ch"><h3><i class="fas fa-desktop" style="color:var(--accent);margin-right:8px"></i>Sesi Aktif</h3><button class="btn btn-d btn-sm" onclick="logoutAllSessions()"><i class="fas fa-right-from-bracket"></i> Logout Semua</button></div>
+                        <div class="cb" id="sessionsList"></div>
+                    </div>
+
+                    <!-- IP Whitelist -->
+                    <div class="card" style="margin-bottom:20px">
+                        <div class="ch">
+                            <h3><i class="fas fa-list-check" style="color:var(--info);margin-right:8px"></i>IP Whitelist</h3>
+                            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted)">
+                                <input type="checkbox" id="ipWhitelistToggle" onchange="toggleIpWhitelist()" style="accent-color:var(--accent);width:16px;height:16px">
+                                Aktifkan
+                            </label>
+                        </div>
+                        <div class="cb" id="ipWhitelistContent" style="opacity:.5;pointer-events:none">
+                            <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px">Hanya IP berikut yang diizinkan mengakses API.</p>
+                            <div style="display:flex;gap:8px;margin-bottom:12px">
+                                <input class="fi" type="text" id="newIpInput" placeholder="Contoh: 192.168.1.100" style="font-family:'Courier New',monospace">
+                                <button class="btn btn-s btn-sm" onclick="addIpWhitelist()" style="white-space:nowrap"><i class="fas fa-plus"></i> Tambah</button>
+                            </div>
+                            <div id="ipList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Rate Limiting -->
+                    <div class="card" style="margin-bottom:20px">
+                        <div class="ch"><h3><i class="fas fa-gauge-high" style="color:var(--warning);margin-right:8px"></i>Rate Limiting</h3></div>
+                        <div class="cb">
+                            <div class="fg">
+                                <label class="fl">Maks Request per Menit</label>
+                                <div style="display:flex;align-items:center;gap:14px">
+                                    <input type="range" id="rateLimit" min="10" max="500" value="60" oninput="document.getElementById('rateLimitVal').textContent=this.value" style="flex:1;accent-color:var(--accent)">
+                                    <span style="font-family:'Space Grotesk';font-size:18px;font-weight:800;min-width:40px;text-align:right" id="rateLimitVal">60</span>
+                                </div>
+                            </div>
+                            <div class="fg">
+                                <label class="fl">Blokir jika melebihi limit</label>
+                                <select class="fs" id="rateAction">
+                                    <option value="reject">Tolak request (429)</option>
+                                    <option value="queue">Antrikan request</option>
+                                    <option value="warn">Peringatkan saja</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-p" onclick="saveRateLimit()"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+                        </div>
+                    </div>
+
+                    <!-- Activity Log -->
+                    <div class="card">
+                        <div class="ch"><h3><i class="fas fa-list-timeline" style="color:var(--accent);margin-right:8px"></i>Log Aktivitas</h3><button class="btn btn-s btn-sm" onclick="clearActLog()"><i class="fas fa-trash"></i></button></div>
+                        <div class="cb" style="padding:0 22px">
+                            <div class="act-log" id="actLog"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API -->
+        <section class="ps" id="p-api">
+            <div style="margin-bottom:24px"><h2 style="font-size:24px;font-weight:800">Koneksi API</h2></div>
+            <div class="card"><div class="cb"><div class="fg"><label class="fl">Base URL</label><input class="fi" type="url" id="apiBaseUrl" placeholder="https://api.example.com/v1"></div><div class="fg"><label class="fl">API Key</label><input class="fi" type="password" id="apiKey" placeholder="sk_live_xxx"></div><div style="display:flex;gap:10px"><button class="btn btn-p" onclick="toast('success','Config disimpan')"><i class="fas fa-save"></i> Simpan</button><button class="btn btn-s" onclick="toast('info','Koneksi OK — 45ms')"><i class="fas fa-bolt"></i> Test</button></div></div></div>
+        </section>
+
+    </div>
+</div>
+
+<div class="mo" id="mod"><div class="ml"><div class="ml-h"><h3 id="mt">Konfirmasi</h3><button class="ml-c" onclick="cMod()"><i class="fas fa-xmark"></i></button></div><div class="ml-b" id="mb"></div><div class="ml-f" id="mf"></div></div></div>
+<div class="tc" id="tc"></div>
+
+<script>
+// =====================================================
+// DATA
+// =====================================================
+var SV=[
+{id:'pulsa-tsel',name:'Pulsa Telkomsel',cat:'pulsa',icon:'fas fa-mobile-screen',color:'#e11d48',bg:'#fce7f3'},
+{id:'pulsa-isat',name:'Pulsa Indosat',cat:'pulsa',icon:'fas fa-mobile-screen',color:'#ea580c',bg:'#fff7ed'},
+{id:'data-tsel',name:'Data Telkomsel',cat:'pulsa',icon:'fas fa-wifi',color:'#e11d48',bg:'#fce7f3'},
+{id:'token-pln',name:'Token PLN',cat:'listrik',icon:'fas fa-bolt',color:'#eab308',bg:'#fef9c3'},
+{id:'ml',name:'Mobile Legends',cat:'game',icon:'fas fa-gamepad',color:'#2563eb',bg:'#dbeafe'},
+{id:'gopay',name:'GoPay',cat:'emoney',icon:'fas fa-wallet',color:'#059669',bg:'#d1fae5'},
+{id:'ovo',name:'OVO',cat:'emoney',icon:'fas fa-wallet',color:'#7c3aed',bg:'#ede9fe'},
+{id:'dana',name:'DANA',cat:'emoney',icon:'fas fa-wallet',color:'#0284c7',bg:'#e0f2fe'}
+];
+var CL={pulsa:'Pulsa & Data',listrik:'Listrik',game:'Game',emoney:'E-Money'};
+var PR={
+'pulsa-tsel':[{name:'Pulsa 25.000',price:25500,desc:'30 hari'},{name:'Pulsa 50.000',price:50200,desc:'30 hari'},{name:'Pulsa 100.000',price:100100,desc:'30 hari'}],
+'pulsa-isat':[{name:'Pulsa 25.000',price:25300,desc:'30 hari'},{name:'Pulsa 50.000',price:50000,desc:'30 hari'}],
+'data-tsel':[{name:'10GB 30 Hari',price:52000,desc:'Internet'},{name:'30GB 30 Hari',price:85000,desc:'Internet'}],
+'token-pln':[{name:'Token 50.000',price:50700,desc:'50kWh'},{name:'Token 100.000',price:100700,desc:'100kWh'}],
+'ml':[{name:'86 Diamonds',price:19200,desc:'ML'},{name:'257 Diamonds',price:57600,desc:'ML'}],
+'gopay':[{name:'GoPay 100rb',price:100800,desc:'Saldo'}],
+'ovo':[{name:'OVO 100rb',price:100800,desc:'Saldo'}],
+'dana':[{name:'DANA 100rb',price:100800,desc:'Saldo'}]
+};
+var DFL=[{name:'Nominal 25.000',price:25500,desc:'Transaksi'}];
+var PM={
+'pulsa':[{v:'pulsa-tsel',l:'Telkomsel'},{v:'pulsa-isat',l:'Indosat'}],
+'paket-data':[{v:'data-tsel',l:'Telkomsel'}],
+'token-pln':[{v:'token-pln',l:'PLN Prabayar'}],
+'game':[{v:'ml',l:'Mobile Legends'}],
+'emoney':[{v:'gopay',l:'GoPay'},{v:'ovo',l:'OVO'},{v:'dana',l:'DANA'}]
+};
+var LM={'pulsa':'Provider','paket-data':'Provider','token-pln':'Wilayah','game':'Game','emoney':'Dompet Digital'};
+var SN={'pulsa':'Pulsa','paket-data':'Paket Data','token-pln':'Token PLN','game':'Voucher Game','emoney':'E-Money'};
+var TH=[
+{id:'TRX001',date:'2024-01-15 14:23',service:'Pulsa Telkomsel',target:'081234567890',product:'Pulsa 25.000',price:25500,status:'sukses'},
+{id:'TRX002',date:'2024-01-15 14:18',service:'Token PLN',target:'543210987654',product:'Token 100.000',price:100700,status:'sukses'},
+{id:'TRX003',date:'2024-01-15 13:55',service:'GoPay',target:'081298765432',product:'GoPay 100rb',price:100800,status:'sukses'},
+{id:'TRX004',date:'2024-01-15 13:30',service:'Data XL',target:'087812345678',product:'10GB 30 Hari',price:52000,status:'pending'},
+{id:'TRX005',date:'2024-01-15 12:15',service:'Mobile Legends',target:'123456789',product:'86 Diamonds',price:19200,status:'sukses'}
+];
+var selPr=null,sdT=null;
+
+// =====================================================
+// SECURITY STATE
+// =====================================================
+var SecState = {
+    tfaEnabled: false,
+    tfaSecret: '',
+    tfaVerified: false,
+    passwordChanged: false,
+    lastPasswordChange: '2024-01-01',
+    apiKeyRotated: false,
+    lastKeyRotation: null,
+    ipWhitelistEnabled: false,
+    ipWhitelist: ['103.45.67.89', '192.168.1.1'],
+    rateLimit: 60,
+    rateAction: 'reject',
+    sessions: [
+        { id:'sess_01', device:'Chrome / Windows 11', ip:'103.45.67.89', location:'Bandung, ID', lastActive:'2 menit lalu', current:true, icon:'fa-desktop' },
+        { id:'sess_02', device:'Safari / iPhone 15', ip:'103.45.67.90', location:'Bandung, ID', lastActive:'3 jam lalu', current:false, icon:'fa-mobile-screen' },
+        { id:'sess_03', device:'Firefox / Ubuntu', ip:'192.168.1.1', location:'Local Network', lastActive:'1 hari lalu', current:false, icon:'fa-laptop' }
+    ],
+    activityLog: [
+        { time:'2024-01-15 14:20', type:'login', icon:'fa-right-to-bracket', color:'#0284c7', bg:'#e0f2fe', text:'Login berhasil dari Chrome / Windows 11' },
+        { time:'2024-01-15 14:18', type:'transaction', icon:'fa-receipt', color:'#059669', bg:'#d1fae5', text:'Transaksi Pulsa Telkomsel — Rp 25.500' },
+        { time:'2024-01-15 10:00', type:'config', icon:'fa-gear', color:'#64748b', bg:'#f1f5f9', text:'Ubah pengaturan rate limiting' },
+        { time:'2024-01-14 22:30', type:'security', icon:'fa-shield-halved', color:'#ef4444', bg:'#fee2e2', text:'Percobaan login gagal dari IP 45.33.22.11' },
+        { time:'2024-01-14 16:00', type:'login', icon:'fa-right-to-bracket', color:'#0284c7', bg:'#e0f2fe', text:'Login dari Safari / iPhone 15' },
+        { time:'2024-01-13 09:00', type:'config', icon:'fa-key', color:'#d97706', bg:'#fef3c7', text:'Password diubah' }
+    ]
+};
+
+function loadSecState(){
+    try{ var s=localStorage.getItem('payqu_sec'); if(s) Object.assign(SecState,JSON.parse(s)); }catch(e){}
+}
+function storeSecState(){ localStorage.setItem('payqu_sec',JSON.stringify(SecState)); }
+
+// =====================================================
+// UTILITAS
+// =====================================================
+function fR(n){return'Rp '+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
+function mN(s){return s.length<=6?s:s.substring(0,4)+'****'+s.substring(s.length-4)}
+function sB(s){var m={sukses:'<span class="bdg bdg-s"><i class="fas fa-check" style="font-size:10px"></i> Sukses</span>',pending:'<span class="bdg bdg-w"><i class="fas fa-clock" style="font-size:10px"></i> Pending</span>',gagal:'<span class="bdg bdg-d"><i class="fas fa-xmark" style="font-size:10px"></i> Gagal</span>'};return m[s]||s}
+function toast(type,msg){
+    var c=document.getElementById('tc'),cls={success:{bg:'#d1fae5',color:'#059669',icon:'fa-check'},error:{bg:'#fee2e2',color:'#ef4444',icon:'fa-xmark'},info:{bg:'#e0f2fe',color:'#0284c7',icon:'fa-info'},warning:{bg:'#fef3c7',color:'#d97706',icon:'fa-triangle-exclamation'}};
+    var cl=cls[type]||cls.info,el=document.createElement('div');el.className='toast';
+    el.innerHTML='<div class="toast-i" style="background:'+cl.bg+';color:'+cl.color+'"><i class="fas '+cl.icon+'"></i></div><span>'+msg+'</span>';
+    c.appendChild(el);setTimeout(function(){el.classList.add('out');setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},300)},3500);
+}
+function oMod(){document.getElementById('mod').classList.add('show')}
+function cMod(){document.getElementById('mod').classList.remove('show')}
+function copyText(id){var v=document.getElementById(id).value;navigator.clipboard.writeText(v).then(function(){toast('success','Disalin ke clipboard')}).catch(function(){toast('info',v)})}
+function addActLog(type,text,icon,color,bg){
+    var now=new Date();
+    var t=[now.getFullYear(),'-',String(now.getMonth()+1).padStart(2,'0'),'-',String(now.getDate()).padStart(2,'0'),' ',String(now.getHours()).padStart(2,'0'),':',String(now.getMinutes()).padStart(2,'0')].join('');
+    SecState.activityLog.unshift({time:t,type:type,icon:icon||'fa-circle',color:color||'#64748b',bg:bg||'#f1f5f9',text:text});
+    if(SecState.activityLog.length>50) SecState.activityLog.length=50;
+    storeSecState(); renderActLog();
+}
+
+// =====================================================
+// NAVIGASI
+// =====================================================
+var pageLabels = {dashboard:'Dashboard',layanan:'Layanan',transaksi:'Transaksi',riwayat:'Riwayat',saldo:'Saldo & Deposit',profil:'Profil',security:'Keamanan',api:'Koneksi API'};
+function nav(p){
+    document.querySelectorAll('.ps').forEach(function(s){s.classList.remove('active')});
+    document.getElementById('p-'+p).classList.add('active');
+    document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('active')});
+    var ni=document.querySelector('.ni[data-page="'+p+'"]');if(ni)ni.classList.add('active');
+    document.getElementById('breadcrumb').textContent=pageLabels[p]||p;
+    if(window.innerWidth<=1024){document.getElementById('sidebar').classList.remove('open');document.getElementById('sov').classList.remove('show')}
+    if(p==='transaksi')rTF();
+    if(p==='security'){renderSecurity()}
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sov').classList.toggle('open')}
+
+// =====================================================
+// RENDER
+// =====================================================
+function rRT(){document.getElementById('rtb').innerHTML=TH.slice(0,5).map(function(t){return'<tr><td style="font-weight:600;font-size:13px">'+t.service+'</td><td style="font-size:12px;color:var(--muted)">'+mN(t.target)+'</td><td style="font-weight:600">'+fR(t.price)+'</td><td>'+sB(t.status)+'</td></tr>'}).join('')}
+function rAS(f){f=f||'all';var fl=f==='all'?SV:SV.filter(function(s){return s.cat===f});document.getElementById('asg').innerHTML=fl.map(function(s){return'<div class="svi" onclick="openSTx(\''+s.id+'\')"><div class="svi-i" style="background:'+s.bg+';color:'+s.color+'"><i class="'+s.icon+'"></i></div><div class="svi-n">'+s.name+'</div></div>'}).join('')}
+function rH(){document.getElementById('hb').innerHTML=TH.map(function(t){return'<tr><td style="font-family:Space Grotesk;font-size:12px;font-weight:600;color:var(--muted)">'+t.id+'</td><td style="font-size:12.5px;color:var(--muted)">'+t.date+'</td><td style="font-weight:600;font-size:13px">'+t.service+'</td><td style="font-size:13px">'+mN(t.target)+'</td><td style="font-weight:700;font-size:13px">'+fR(t.price)+'</td><td>'+sB(t.status)+'</td></tr>'}).join('')}
+
+function openSTx(id){nav('transaksi');var st='pulsa';if(id.indexOf('data')===0)st='paket-data';else if(id.indexOf('pln')!==-1)st='token-pln';else if(id==='ml')st='game';else if(['gopay','ovo','dana'].indexOf(id)!==-1)st='emoney';document.getElementById('ts').value=st;onSC();setTimeout(function(){document.getElementById('tp').value=id;onPC()},50)}
+function rTF(){document.getElementById('ts').value='';document.getElementById('tp').innerHTML='<option value="">-- Pilih --</option>';document.getElementById('tn').value='';document.getElementById('nif').textContent='';document.getElementById('tpg').style.display='none';document.getElementById('tsub').disabled=true;document.getElementById('txs').style.display='block';document.getElementById('txsc').style.display='none';selPr=null}
+function onSC(){var sv=document.getElementById('ts').value,ps=document.getElementById('tp');ps.innerHTML='<option value="">-- Pilih --</option>';document.getElementById('tpg').style.display='none';document.getElementById('tsub').disabled=true;selPr=null;hSum();if(!sv)return;document.getElementById('lp').textContent=LM[sv]||'Provider';(PM[sv]||[]).forEach(function(p){var o=document.createElement('option');o.value=p.v;o.textContent=p.l;ps.appendChild(o)})}
+function onPC(){var pv=document.getElementById('tp').value;document.getElementById('tpg').style.display='none';document.getElementById('tsub').disabled=true;selPr=null;hSum();if(!pv)return;var pr=PR[pv]||DFL;document.getElementById('tpg').style.display='block';document.getElementById('tpl').innerHTML=pr.map(function(p,i){return'<div class="po" onclick="selPrd('+i+',\''+pv+'\')" data-i="'+i+'"><div><div class="po-n">'+p.name+'</div><div class="po-d">'+p.desc+'</div></div><div class="po-p">'+fR(p.price)+'</div></div>'}).join('')}
+function selPrd(i,pv){var pr=PR[pv]||DFL;selPr=pr[i];document.querySelectorAll('.po').forEach(function(e){e.classList.remove('sel')});document.querySelector('.po[data-i="'+i+'"]').classList.add('sel');uSum();uBtn()}
+function onNI(v){var sv=document.getElementById('ts').value,inf=document.getElementById('nif');if(!v){inf.textContent='';uSum();uBtn();return}if(['pulsa','paket-data'].indexOf(sv)!==-1&&v.length>=4){var px=v.substring(0,4),op='';if(/^08(11|12|13|21|22|23|51|52|53)/.test(px))op='Telkomsel';else if(/^08(14|15|16|55|56|57|58)/.test(px))op='Indosat';else if(/^08(17|18|19|59|78|77)/.test(px))op='XL / Axis';inf.innerHTML=op?'<i class="fas fa-signal" style="color:var(--accent);margin-right:4px"></i> Terdeteksi: <strong>'+op+'</strong>':''}else inf.textContent='';uSum();uBtn()}
+function uBtn(){document.getElementById('tsub').disabled=!(document.getElementById('ts').value&&document.getElementById('tp').value&&document.getElementById('tn').value.length>=6&&selPr)}
+function uSum(){var sv=document.getElementById('ts').value,pv=document.getElementById('tp').value,nm=document.getElementById('tn').value;if(!sv||!pv||!nm){hSum();return}document.getElementById('smS').textContent=SN[sv]||sv;document.getElementById('smN').textContent=mN(nm);if(selPr){document.getElementById('smP').textContent=selPr.name;document.getElementById('smPr').textContent=fR(selPr.price);document.getElementById('smT').textContent=fR(selPr.price+1500);document.getElementById('txs').style.display='none';document.getElementById('txsc').style.display='block'}else hSum()}
+function hSum(){document.getElementById('txs').style.display='block';document.getElementById('txsc').style.display='none'}
+
+// =====================================================
+// TRANSAKSI
+// =====================================================
+function procTxn(){
+    if(!SecState.tfaEnabled){execTxnDirect();return}
+    // Jika 2FA aktif, minta kode
+    if(!SecState.tfaVerified){
+        showTfaModal(function(){execTxnDirect()});
+        return;
+    }
+    execTxnDirect();
+}
+function execTxnDirect(){
+    var sv=document.getElementById('ts').value,pn=document.getElementById('tp').value,nm=document.getElementById('tn').value,tot=selPr.price+1500;
+    document.getElementById('mt').textContent='Konfirmasi';document.getElementById('mb').innerHTML='<div style="text-align:center;margin-bottom:16px"><div style="width:60px;height:60px;border-radius:16px;background:#d1fae5;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i class="fas fa-paper-plane" style="font-size:24px;color:#059669"></i></div></div><div style="background:#f8fafc;border-radius:12px;padding:18px"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="color:var(--muted);font-size:13px">Layanan</span><span style="font-weight:600;font-size:13px">'+(SN[sv]||sv)+' - '+pn+'</span></div><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="color:var(--muted);font-size:13px">Tujuan</span><span style="font-weight:600;font-size:13px">'+nm+'</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--muted);font-size:13px">Total</span><span style="font-weight:800;font-size:18px;color:var(--accent)">'+fR(tot)+'</span></div></div>';
+    document.getElementById('mf').innerHTML='<button class="btn btn-s" onclick="cMod()">Batal</button><button class="btn btn-p" onclick="doExecTxn()"><i class="fas fa-check"></i> Proses</button>';
+    oMod();
+}
+async function doExecTxn(){
+    document.getElementById('mt').textContent='Memproses...';
+    document.getElementById('mb').innerHTML='<div style="text-align:center;padding:40px 0"><div style="width:60px;height:60px;border:3px solid #e2e8f0;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px"></div><p style="font-size:15px;font-weight:600">Memproses transaksi...</p></div>';
+    document.getElementById('mf').innerHTML='';
+    addActLog('transaction','Transaksi '+selPr.name+' ke '+document.getElementById('tn').value,'fa-receipt','#059669','#d1fae5');
+    await new Promise(function(r){setTimeout(r,1500)});
+    var ok=Math.random()>0.12;
+    var nx={id:'TRX'+Date.now().toString().slice(-10),date:new Date().toISOString().slice(0,16).replace('T',' '),service:(SN[document.getElementById('ts').value]||'')+' '+document.getElementById('tp').value,target:document.getElementById('tn').value,product:selPr.name,price:selPr.price,status:ok?'sukses':'gagal'};
+    TH.unshift(nx);rRT();rH();
+    if(ok){
+        document.getElementById('mt').textContent='Berhasil';document.getElementById('mb').innerHTML='<div style="text-align:center;padding:20px 0"><div style="width:72px;height:72px;border-radius:50%;background:#d1fae5;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fas fa-check" style="font-size:32px;color:#059669"></i></div><h3 style="font-size:18px;font-weight:700;color:#059669">Berhasil</h3></div>';
+        toast('success','Transaksi berhasil');
+    }else{
+        document.getElementById('mt').textContent='Gagal';document.getElementById('mb').innerHTML='<div style="text-align:center;padding:20px 0"><div style="width:72px;height:72px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fas fa-xmark" style="font-size:32px;color:#ef4444"></i></div><h3 style="font-size:18px;font-weight:700;color:#ef4444">Gagal</h3></div>';
+        toast('error','Transaksi gagal');
+    }
+    document.getElementById('mf').innerHTML='<button class="btn btn-s" onclick="cMod();rTF()">Tutup</button>';
+}
+async function procDep(){
+    toast('info','Deposit diproses — VA: 8800'+Date.now().toString().slice(-10));
+    addActLog('config','Deposit request via '+document.getElementById('dm').value,'fa-wallet','#d97706','#fef3c7');
+}
+
+// =====================================================
+// SECURITY: SCORE
+// =====================================================
+function calcSecurityScore(){
+    var score=0, checks=[];
+    // Password
+    var pwAge=(Date.now()-new Date(SecState.lastPasswordChange).getTime())/(1000*60*60*24);
+    if(pwAge<30){score+=25;checks.push({label:'Password segar (< 30 hari)',ok:true})}
+    else if(pwAge<90){score+=15;checks.push({label:'Password perlu diperbarui',ok:false,warn:true})}
+    else{score+=5;checks.push({label:'Password sudah kadaluarsa',ok:false})}
+
+    // 2FA
+    if(SecState.tfaEnabled){score+=25;checks.push({label:'2FA diaktifkan',ok:true})}
+    else{checks.push({label:'2FA belum diaktifkan',ok:false})}
+
+    // API Key Rotation
+    if(SecState.apiKeyRotated&&(Date.now()-new Date(SecState.lastKeyRotation).getTime())<(1000*60*60*24*30)){score+=20;checks.push({label:'API Key baru (< 30 hari)',ok:true})}
+    else if(SecState.apiKeyRotated){score+=10;checks.push({label:'API Key perlu di-rotasi',ok:false,warn:true})}
+    else{checks.push({label:'API Key belum pernah di-rotasi',ok:false})}
+
+    // IP Whitelist
+    if(SecState.ipWhitelistEnabled&&SecState.ipWhitelist.length>0){score+=15;checks.push({label:'IP Whitelist aktif ('+SecState.ipWhitelist.length+' IP)',ok:true})}
+    else if(SecState.ipWhitelistEnabled){score+=8;checks.push({label:'IP Whitelist aktif tapi kosong',ok:false,warn:true})}
+    else{checks.push({label:'IP Whitelist tidak aktif',ok:false})}
+
+    // Rate Limiting
+    if(SecState.rateLimit<=100){score+=15;checks.push({label:'Rate limiting ketat ('+SecState.rateLimit+'/min)',ok:true})}
+    else if(SecState.rateLimit<=200){score+=8;checks.push({label:'Rate limiting sedang ('+SecState.rateLimit+'/min)',ok:false,warn:true})}
+    else{score+=3;checks.push({label:'Rate limiting longgar ('+SecState.rateLimit+'/min)',ok:false})}
+
+    return {score:Math.min(100,score),checks:checks};
+}
+
+function renderSecurityScore(){
+    var result=calcSecurityScore();
+    var score=result.score;
+    var color=score>=80?'var(--accent)':score>=50?'var(--warning)':'var(--danger)';
+    var label=score>=80?'Kuat':score>=50?'Sedang':'Lemah';
+    var desc=score>=80?'Akun Anda cukup aman. Pertahankan kebiasaan baik.':score>=50?'Ada beberapa hal yang perlu diperbaiki untuk meningkatkan keamanan.':'Keamanan akun Anda rentan. Segera perbaiki item yang ditandai merah.';
+
+    // Animasi ring
+    var circumference=314.16;
+    var offset=circumference-(circumference*score/100);
+    var ring=document.getElementById('scoreRing');
+    ring.style.stroke=color;
+    setTimeout(function(){ring.style.strokeDashoffset=offset},100);
+
+    document.getElementById('scoreNum').textContent=score;
+    document.getElementById('scoreNum').style.color=color;
+    document.getElementById('scoreLabel').textContent='Skor Keamanan: '+label;
+    document.getElementById('scoreDesc').textContent=desc;
+    document.getElementById('secScoreMini').textContent=score;
+
+    // Checks
+    document.getElementById('scoreChecks').innerHTML=result.checks.map(function(c){
+        var icon=c.ok?'fa-check':c.warn?'fa-exclamation':'fa-xmark';
+        var cls=c.ok?'si-ok':c.warn?'si-warn':'si-bad';
+        return'<div style="display:flex;align-items:center;gap:10px;padding:6px 0"><i class="fas '+icon+'" style="font-size:12px;color:'+(c.ok?'#059669':c.warn?'#d97706':'#ef4444')+'"></i><span style="font-size:13px;flex:1;color:'+(c.ok?'var(--fg)':'var(--muted)')+'">'+c.label+'</span></div>';
+    }).join('');
+}
+
+// =====================================================
+// SECURITY: PASSWORD
+// =====================================================
+function checkPwStrength(){
+    var pw=document.getElementById('pwNew').value;
+    var el=document.getElementById('pwStrength');
+    if(!pw){el.innerHTML='';return}
+    var score=0;
+    if(pw.length>=8)score++;if(pw.length>=12)score++;
+    if(/[A-Z]/.test(pw))score++;if(/[0-9]/.test(pw))score++;
+    if(/[^A-Za-z0-9]/.test(pw))score++;
+    var levels=[
+        {min:0,label:'Sangat Lemah',color:'#ef4444',width:'10%',bg:'#fee2e2'},
+        {min:1,label:'Lemah',color:'#ef4444',width:'25%',bg:'#fee2e2'},
+        {min:2,label:'Sedang',color:'#f59e0b',width:'50%',bg:'#fef3c7'},
+        {min:3,label:'Kuat',color:'#059669',width:'75%',bg:'#d1fae5'},
+        {min:4,label:'Sangat Kuat',color:'#059669',width:'100%',bg:'#d1fae5'}
+    ];
+    var lvl=levels[0];
+    for(var i=levels.length-1;i>=0;i--){if(score>=levels[i].min){lvl=levels[i];break}}
+    el.innerHTML='<div style="height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden;margin-bottom:6px"><div style="height:100%;width:'+lvl.width+';background:'+lvl.color+';border-radius:3px;transition:width .3s"></div></div><span style="font-size:12px;font-weight:700;color:'+lvl.color+'">'+lvl.label+'</span>';
+}
+
+function changePassword(){
+    var old=document.getElementById('pwOld').value;
+    var np=document.getElementById('pwNew').value;
+    var conf=document.getElementById('pwConf').value;
+    if(!old){toast('error','Masukkan password lama');return}
+    if(!np||np.length<8){toast('error','Password baru minimal 8 karakter');return}
+    if(np!==conf){toast('error','Konfirmasi password tidak cocok');return}
+    if(old===np){toast('error','Password baru tidak boleh sama dengan yang lama');return}
+
+    // Simulasi proses
+    SecState.lastPasswordChange=new Date().toISOString().slice(0,10);
+    SecState.passwordChanged=true;
+    storeSecState();
+    addActLog('security','Password berhasil diubah','fa-key','#059669','#d1fae5');
+    document.getElementById('pwOld').value='';
+    document.getElementById('pwNew').value='';
+    document.getElementById('pwConf').value='';
+    document.getElementById('pwStrength').innerHTML='';
+    toast('success','Password berhasil diubah');
+    renderSecurityScore();
+}
+
+// =====================================================
+// SECURITY: 2FA
+// =====================================================
+function renderTfa(){
+    var el=document.getElementById('tfaContent');
+    var statusEl=document.getElementById('tfaStatus');
+    if(SecState.tfaEnabled){
+        statusEl.className='bdg bdg-s';
+        statusEl.innerHTML='<i class="fas fa-check" style="font-size:10px"></i> Aktif';
+        el.innerHTML='<div style="text-align:center;padding:20px 0"><div style="width:64px;height:64px;border-radius:16px;background:#d1fae5;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><i class="fas fa-shield-check" style="font-size:28px;color:#059669"></i></div><p style="font-size:15px;font-weight:700;color:var(--accent)">2FA Aktif</p><p style="font-size:13px;color:var(--muted);margin-top:6px">Setiap transaksi akan meminta kode verifikasi 6 digit dari authenticator app Anda.</p><div style="margin-top:20px;display:flex;gap:10px;justify-content:center"><button class="btn btn-s btn-sm" onclick="showTfaModal(function(){disableTfa()})"><i class="fas fa-power-off"></i> Nonaktifkan 2FA</button><button class="btn btn-s btn-sm" onclick="regenerateTfaSecret()"><i class="fas fa-rotate"></i> Ganti Secret</button></div></div>';
+    } else {
+        statusEl.className='bdg bdg-d';
+        statusEl.innerHTML='<i class="fas fa-xmark" style="font-size:10px"></i> Nonaktif';
+        el.innerHTML='<div style="text-align:center;padding:20px 0"><div style="width:64px;height:64px;border-radius:16px;background:#fee2e2;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><i class="fas fa-shield-xmark" style="font-size:28px;color:#ef4444"></i></div><p style="font-size:15px;font-weight:700;color:var(--danger)">2FA Nonaktif</p><p style="font-size:13px;color:var(--muted);margin-top:6px">Aktifkan autentikasi 2 faktor untuk keamanan ekstra saat bertransaksi.</p><button class="btn btn-p" style="margin-top:20px" onclick="enableTfa()"><i class="fas fa-plus"></i> Aktifkan 2FA</button></div>';
+    }
+}
+
+function enableTfa(){
+    // Generate secret
+    var chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    var secret='';
+    for(var i=0;i<32;i++)secret+=chars.charAt(Math.floor(Math.random()*chars.length));
+    SecState.tfaSecret=secret;
+    SecState.tfaVerified=false;
+    storeSecState();
+
+    // Tampilkan QR code simulasi dan secret
+    document.getElementById('tfaContent').innerHTML=
+        '<div style="text-align:center"><p style="font-size:14px;font-weight:700;margin-bottom:16px">Scan QR Code dengan Authenticator App</p>'+
+        '<div style="width:180px;height:180px;margin:0 auto 16px;background:#f8fafc;border-radius:12px;display:flex;align-items:center;justify-content:center;border:2px dashed var(--border)">'+
+        '<div style="text-align:center"><i class="fas fa-qrcode" style="font-size:48px;color:#cbd5e1"></i><div style="font-size:10px;color:var(--muted);margin-top:4px">QR Code</div></div></div>'+
+        '<p style="font-size:12px;color:var(--muted);margin-bottom:16px">Atau masukkan secret key manual:</p>'+
+        '<div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px"><input class="fi" type="text" value="'+secret+'" readonly style="font-family:Courier New,monospace;font-size:14px;text-align:center;max-width:280px;background:#f8fafc;letter-spacing:2px"><button class="btn btn-s btn-sm" onclick="navigator.clipboard.writeText(\''+secret+'\');toast(\'success\',\'Secret disalin\')"><i class="fas fa-copy"></i></button></div>'+
+        '<p style="font-size:13px;color:var(--muted);margin-bottom:20px">Masukkan kode 6 digit dari app untuk verifikasi:</p>'+
+        '<div class="totp-inputs"><input type="text" maxlength="1" oninput="totpNext(this,0)" id="totp0"><input type="text" maxlength="1" oninput="totpNext(this,1)" id="totp1"><input type="text" maxlength="1" oninput="totpNext(this,2)" id="totp2"><input type="text" maxlength="1" oninput="totpNext(this,3)" id="totp3"><input type="text" maxlength="1" oninput="totpNext(this,4)" id="totp4"><input type="text" maxlength="1" oninput="totpNext(this,5)" id="totp5"></div>'+
+        '<div style="display:flex;gap:10px;justify-content:center"><button class="btn btn-s" onclick="renderTfa()"><i class="fas fa-xmark"></i> Batal</button><button class="btn btn-p" onclick="verifyTfa()" id="btnVerifyTfa" disabled><i class="fas fa-check"></i> Verifikasi</button></div></div>';
+
+    // Auto-focus
+    setTimeout(function(){document.getElementById('totp0').focus()},100);
+}
+
+function totpNext(el,idx){
+    el.value=el.value.replace(/\D/g,'').slice(0,1);
+    if(el.value&&idx<5){document.getElementById('totp'+(idx+1)).focus()}
+    // Cek semua terisi
+    var allFilled=true;
+    for(var i=0;i<=5;i++){if(!document.getElementById('totp'+i).value)allFilled=false}
+    document.getElementById('btnVerifyTfa').disabled=!allFilled;
+}
+
+function verifyTfa(){
+    var code='';
+    for(var i=0;i<=5;i++)code+=document.getElementById('totp'+i).value;
+    // Simulasi: terima kode apapun 6 digit
+    SecState.tfaEnabled=true;
+    SecState.tfaVerified=true;
+    storeSecState();
+    addActLog('security','2FA diaktifkan dan diverifikasi','fa-shield-halved','#059669','#d1fae5');
+    toast('success','2FA berhasil diaktifkan');
+    renderTfa();
+    renderSecurityScore();
+}
+
+function disableTfa(){
+    SecState.tfaEnabled=false;
+    SecState.tfaVerified=false;
+    SecState.tfaSecret='';
+    storeSecState();
+    addActLog('security','2FA dinonaktifkan','fa-shield-xmark','#ef4444','#fee2e2');
+    toast('warning','2FA telah dinonaktifkan');
+    renderTfa();
+    renderSecurityScore();
+}
+
+function regenerateTfaSecret(){
+    SecState.tfaEnabled=false;
+    SecState.tfaVerified=false;
+    storeSecState();
+    addActLog('security','Secret 2FA di-generate ulang','fa-rotate','#d97706','#fef3c7');
+    enableTfa();
+}
+
+function showTfaModal(callback){
+    document.getElementById('mt').textContent='Verifikasi 2FA';
+    document.getElementById('mb').innerHTML=
+        '<div style="text-align:center;margin-bottom:16px"><div style="width:56px;height:56px;border-radius:14px;background:#e0f2fe;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i class="fas fa-mobile-screen" style="font-size:24px;color:#0284c7"></i></div><p style="font-size:14px;font-weight:700">Masukkan kode dari Authenticator App</p></div>'+
+        '<div class="totp-inputs"><input type="text" maxlength="1" oninput="totpNext(this,0)" id="mtotp0"><input type="text" maxlength="1" oninput="totpNext(this,1)" id="mtotp1"><input type="text" maxlength="1" oninput="totpNext(this,2)" id="mtotp2"><input type="text" maxlength="1" oninput="totpNext(this,3)" id="mtotp3"><input type="text" maxlength="1" oninput="totpNext(this,4)" id="mtotp4"><input type="text" maxlength="1" oninput="totpNext(this,5)" id="mtotp5"></div>';
+    document.getElementById('mf').innerHTML='<button class="btn btn-s" onclick="cMod()">Batal</button><button class="btn btn-p" onclick="verifyModalTfa()" id="btnMVerify" disabled><i class="fas fa-check"></i> Verifikasi</button>';
+    oMod();
+    setTimeout(function(){document.getElementById('mtotp0').focus()},100);
+    window._tfaCallback=callback;
+}
+function totpNext(el,idx){
+    el.value=el.value.replace(/\D/g,'').slice(0,1);
+    if(el.value&&idx<5){var next=document.getElementById((el.id.startsWith('m')?'mtotp':'totp')+(idx+1));if(next)next.focus()}
+    var prefix=el.id.startsWith('m')?'mtotp':'totp';
+    var allFilled=true;for(var i=0;i<=5;i++){if(!document.getElementById(prefix+i).value)allFilled=false}
+    var btn=el.id.startsWith('m')?document.getElementById('btnMVerify'):document.getElementById('btnVerifyTfa');
+    if(btn)btn.disabled=!allFilled;
+}
+function verifyModalTfa(){
+    var code='';for(var i=0;i<=5;i++)code+=document.getElementById('mtotp'+i).value;
+    SecState.tfaVerified=true;
+    cMod();
+    addActLog('security','Verifikasi 2FA berhasil','fa-shield-halved','#059669','#d1fae5');
+    toast('success','Verifikasi berhasil');
+    if(window._tfaCallback)window._tfaCallback();
+}
+
+// =====================================================
+// SECURITY: SESSIONS
+// =====================================================
+function renderSessions(){
+    document.getElementById('sessionsList').innerHTML=SecState.sessions.map(function(s){
+        return'<div class="session-device'+(s.current?' current':'')+'"><div class="sd-icon"><i class="fas '+s.icon+'"></i></div><div style="flex:1"><div style="font-size:13.5px;font-weight:600">'+s.device+(s.current?' <span style="font-size:11px;color:var(--accent);font-weight:700">(Perangkat Ini)</span>':'')+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px"><i class="fas fa-location-dot" style="margin-right:4px"></i>'+s.location+' &middot; '+s.lastActive+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;font-family:Courier New,monospace">IP: '+s.ip+'</div></div>'+(s.current?'':'<button class="btn btn-d btn-sm" onclick="revokeSession(\''+s.id+'\')" title="Logout perangkat ini"><i class="fas fa-right-from-bracket"></i></button>')+'</div>';
+    }).join('');
+}
+function revokeSession(id){
+    SecState.sessions=SecState.sessions.filter(function(s){return s.id!==id});
+    storeSecState();renderSessions();
+    addActLog('security','Sesi perangkat di-revoke','fa-right-from-bracket','#d97706','#fef3c7');
+    toast('warning','Sesi perangkat berhasil dihentikan');
+}
+function logoutAllSessions(){
+    var current=SecState.sessions.find(function(s){return s.current});
+    SecState.sessions=current?[current]:[];
+    storeSecState();renderSessions();
+    addActLog('security','Semua sesi lain di-logout','fa-right-from-bracket','#ef4444','#fee2e2');
+    toast('warning','Semua sesi lain telah di-logout');
+}
+
+// =====================================================
+// SECURITY: IP WHITELIST
+// =====================================================
+function toggleIpWhitelist(){
+    var on=document.getElementById('ipWhitelistToggle').checked;
+    SecState.ipWhitelistEnabled=on;
+    storeSecState();
+    var el=document.getElementById('ipWhitelistContent');
+    el.style.opacity=on?'1':'.5';
+    el.style.pointerEvents=on?'auto':'none';
+    addActLog('config','IP Whitelist '+(on?'diaktifkan':'dinonaktifkan'),'fa-list-check',on?'#059669':'#ef4444',on?'#d1fae5':'#fee2e2');
+    renderSecurityScore();
+}
+function renderIpList(){
+    document.getElementById('ipList').innerHTML=SecState.ipWhitelist.map(function(ip,i){
+        return'<span class="ip-tag"><i class="fas fa-server" style="color:var(--accent);font-size:11px"></i> '+ip+' <span class="ip-remove" onclick="removeIp('+i+')" title="Hapus"><i class="fas fa-xmark"></i></span></span>';
+    }).join('');
+}
+function addIpWhitelist(){
+    var ip=document.getElementById('newIpInput').value.trim();
+    if(!ip){toast('error','Masukkan alamat IP');return}
+    if(!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ip)){toast('error','Format IP tidak valid (contoh: 192.168.1.100)');return}
+    if(SecState.ipWhitelist.indexOf(ip)!==-1){toast('warning','IP sudah ada di daftar');return}
+    SecState.ipWhitelist.push(ip);
+    storeSecState();renderIpList();renderSecurityScore();
+    document.getElementById('newIpInput').value='';
+    addActLog('config','IP '+ip+' ditambahkan ke whitelist','fa-list-check','#059669','#d1fae5');
+    toast('success','IP '+ip+' ditambahkan');
+}
+function removeIp(idx){
+    var removed=SecState.ipWhitelist.splice(idx,1);
+    storeSecState();renderIpList();renderSecurityScore();
+    if(removed.length)addActLog('config','IP '+removed[0]+' dihapus dari whitelist','fa-list-check','#ef4444','#fee2e2');
+    toast('info','IP dihapus dari whitelist');
+}
+
+// =====================================================
+// SECURITY: RATE LIMITING
+// =====================================================
+function saveRateLimit(){
+    SecState.rateLimit=parseInt(document.getElementById('rateLimit').value)||60;
+    SecState.rateAction=document.getElementById('rateAction').value;
+    storeSecState();renderSecurityScore();
+    addActLog('config','Rate limiting diubah: '+SecState.rateLimit+'/min ('+SecState.rateAction+')','fa-gauge-high','#d97706','#fef3c7');
+    toast('success','Pengaturan rate limiting disimpan');
+}
+
+// =====================================================
+// SECURITY: API KEY ROTATION
+// =====================================================
+function rotateApiKey(){
+    document.getElementById('btnRotate').style.display='none';
+    document.getElementById('btnConfirmRotate').style.display='';
+    document.getElementById('btnConfirmRotate').className='btn btn-d';
+    document.getElementById('btnConfirmRotate').innerHTML='<i class="fas fa-exclamation-triangle"></i> Konfirmasi Rotasi';
+    document.getElementById('newApiKeyGroup').style.display='block';
+    // Generate key baru
+    var chars='abcdefghijklmnopqrstuvwxyz0123456789';
+    var key='sk_live_';
+    for(var i=0;i<32;i++)key+=chars.charAt(Math.floor(Math.random()*chars.length));
+    document.getElementById('newApiKey').value=key;
+    window._pendingApiKey=key;
+}
+function confirmRotateApiKey(){
+    if(!window._pendingApiKey)return;
+    SecState.apiKeyRotated=true;
+    SecState.lastKeyRotation=new Date().toISOString().slice(0,10);
+    document.getElementById('currentApiKey').value=window._pendingApiKey;
+    document.getElementById('newApiKeyGroup').style.display='none';
+    document.getElementById('btnRotate').style.display='';
+    document.getElementById('btnConfirmRotate').style.display='none';
+    storeSecState();renderSecurityScore();
+    addActLog('security','API Key di-rotasi','fa-rotate','#0284c7','#e0f2fe');
+    toast('success','API Key berhasil di-rotasi. Key lama valid 24 jam.');
+    window._pendingApiKey=null;
+}
+
+// =====================================================
+// SECURITY: ACTIVITY LOG
+// =====================================================
+function renderActLog(){
+    document.getElementById('actLog').innerHTML=SecState.activityLog.map(function(l){
+        return'<div class="act-log-item"><div class="al-time">'+l.time+'</div><div class="al-icon" style="background:'+l.bg+';color:'+l.color+'"><i class="fas '+l.icon+'"></i></div><div class="al-text">'+l.text+'</div></div>';
+    }).join('');
+}
+function clearActLog(){
+    SecState.activityLog=[];
+    storeSecState();renderActLog();
+    toast('info','Log aktivitas dikosongkan');
+}
+
+// =====================================================
+// RENDER ALL SECURITY
+// =====================================================
+function renderSecurity(){
+    renderSecurityScore();
+    renderTfa();
+    renderSessions();
+    renderIpList();
+    renderActLog();
+    document.getElementById('rateLimit').value=SecState.rateLimit;
+    document.getElementById('rateLimitVal').textContent=SecState.rateLimit;
+    document.getElementById('rateAction').value=SecState.rateAction||'reject';
+    document.getElementById('ipWhitelistToggle').checked=SecState.ipWhitelistEnabled;
+    var el=document.getElementById('ipWhitelistContent');
+    el.style.opacity=SecState.ipWhitelistEnabled?'1':'.5';
+    el.style.pointerEvents=SecState.ipWhitelistEnabled?'auto':'none';
+}
+
+// =====================================================
+// GLOBAL EVENTS
+// =====================================================
+document.addEventListener('click',function(e){
+    if(!e.target.closest('.mo'))cMod();
+});
+document.addEventListener('keydown',function(e){
+    if(e.key==='Escape')cMod();
+});
+
+// =====================================================
+// INIT
+// =====================================================
+document.addEventListener('DOMContentLoaded',function(){
+    loadSecState();
+    rRT();rAS();rH();renderSecurity();
+});
+</script>
+</body>
+</html>
